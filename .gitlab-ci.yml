@@ -1,0 +1,21 @@
+variables:
+  KUBERNETES_SERVICE_ACCOUNT_OVERWRITE: gitlab-runner
+  REGISTRY: "ecsazbdpd.azurecr.io"
+  CONTAINER_IMAGE: $CI_PROJECT_NAME
+  VERSION: $CI_COMMIT_REF_NAME-$CI_PIPELINE_ID
+  
+stages:
+ - build
+ - test
+ - publish
+ - scheduled
+ 
+build:
+  tags: 
+    - docker-build
+  stage: build
+  # only:
+  #   - eneco
+  script:
+  - docker build -t $REGISTRY/$CONTAINER_IMAGE:$VERSION .
+  - docker push $REGISTRY/$CONTAINER_IMAGE:$VERSION
