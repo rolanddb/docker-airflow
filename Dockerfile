@@ -22,6 +22,8 @@ ENV LC_ALL en_US.UTF-8
 ENV LC_CTYPE en_US.UTF-8
 ENV LC_MESSAGES en_US.UTF-8
 
+COPY build/incubator-airflow /build/incubator-airflow
+
 RUN set -ex \
     && buildDeps=' \
         python3-dev \
@@ -58,10 +60,13 @@ RUN set -ex \
     && pip install pytz \
     && pip install pyOpenSSL \
     && pip install ndg-httpsclient \
-    && pip install pyasn1 \
+    && pip install pyasn1 
+    
+RUN pip install -e /build/incubator-airflow[crypto,celery,mysql,postgres,hive,jdbc,kubernetes,azure,slack] \
     # && pip install apache-airflow[crypto,celery,postgres,hive,jdbc,mysql]==$AIRFLOW_VERSION \
-    && pip install git+https://github.com/apache/incubator-airflow.git@master \
-    && pip install psycopg2 \
+    # && pip install git+https://github.com/apache/incubator-airflow.git@master \
+    # && pip install kubernetes \
+    # && pip install psycopg2 \
     && pip install celery[redis]==4.0.2 \
     && apt-get purge --auto-remove -yqq $buildDeps \
     && apt-get clean \
