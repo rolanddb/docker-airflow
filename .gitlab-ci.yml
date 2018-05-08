@@ -17,5 +17,5 @@ build:
   # only:
   #   - eneco
   script:
-  - docker build -t $REGISTRY/$CONTAINER_IMAGE:$VERSION .
+  - docker build -f Dockerfile.1-10-beta1 -t $REGISTRY/$CONTAINER_IMAGE:$VERSION .
   - docker push $REGISTRY/$CONTAINER_IMAGE:$VERSION
